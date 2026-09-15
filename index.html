@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Contacte con Cuevo XX</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:transparent;
+}
+
+/* BOTÓN FLOTANTE */
+#chatButton{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    border:4px solid #e63946;
+    background:white;
+    cursor:pointer;
+    overflow:hidden;
+    box-shadow:0 5px 18px rgba(0,0,0,.25);
+    z-index:9999;
+}
+
+#chatButton img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* VENTANA CHAT */
+#chatWindow{
+    display:none;
+    position:fixed;
+    right:20px;
+    bottom:110px;
+    width:340px;
+    max-width:calc(100vw - 30px);
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 35px rgba(0,0,0,.30);
+    z-index:9998;
+}
+
+/* CABECERA */
+.chatHeader{
+    background:#e63946;
+    color:white;
+    padding:14px;
+    display:flex;
+    align-items:center;
+}
+
+.chatHeader img{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:2px solid white;
+    object-fit:cover;
+    margin-right:10px;
+}
+
+.chatHeader strong{
+    font-size:17px;
+}
+
+.online{
+    font-size:12px;
+    margin-top:3px;
+}
+
+.close{
+    margin-left:auto;
+    cursor:pointer;
+    font-size:25px;
+}
+
+/* MENSAJES */
+.chatBody{
+    padding:18px;
+    background:#fff8f8;
+}
+
+.message{
+    background:white;
+    padding:12px 14px;
+    border-radius:5px 15px 15px 15px;
+    box-shadow:0 2px 7px rgba(0,0,0,.08);
+    line-height:1.45;
+    font-size:14px;
+}
+
+/* AUDIO */
+.audioButton{
+    margin-top:12px;
+    border:none;
+    background:#f1f1f1;
+    padding:8px 12px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* TEXTO CLIENTE */
+textarea{
+    width:100%;
+    margin-top:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:10px;
+    resize:none;
+    font-family:Arial;
+}
+
+/* WHATSAPP */
+.whatsapp{
+    width:100%;
+    border:none;
+    background:#25D366;
+    color:white;
+    padding:12px;
+    margin-top:10px;
+    border-radius:25px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.whatsapp:hover{
+    background:#1ebe5d;
+}
+
+.footer{
+    text-align:center;
+    font-size:11px;
+    color:#888;
+    margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BOTÓN CON LOGO -->
+<button id="chatButton" onclick="toggleChat()">
+    <img src="logo.jpg" alt="Kuña Guazú">
+</button>
+
+<!-- VENTANA -->
+<div id="chatWindow">
+
+    <div class="chatHeader">
+
+        <img src="logo.jpg">
+
+        <div>
+            <strong>Kuña Guazú</strong>
+            <div class="online">● Estamos para ayudarte</div>
+        </div>
+
+        <div class="close" onclick="toggleChat()">×</div>
+
+    </div>
+
+    <div class="chatBody">
+
+        <div class="message">
+
+            👋 <strong>¡Bienvenido a nuestra página!</strong>
+
+            <br><br>
+
+            Llevaremos a otro nivel tu negocio.
+
+            <br><br>
+
+            <strong>Contáctate con nosotras.</strong>
+
+            <br><br>
+
+            ¿En qué podemos ayudarte?
+
+        </div>
+
+        <button class="audioButton" onclick="hablar()">
+            🔊 Escuchar mensaje
+        </button>
+
+        <textarea
+            id="mensaje"
+            rows="3"
+            placeholder="Escribe aquí tu consulta..."></textarea>
+
+        <button class="whatsapp" onclick="enviarWhatsApp()">
+            💬 Enviar por WhatsApp
+        </button>
+
+        <div class="footer">
+            Kuña Guazú • Atención en línea
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ABRIR / CERRAR CHAT */
+
+function toggleChat(){
+
+    const chat = document.getElementById("chatWindow");
+
+    if(chat.style.display === "block"){
+        chat.style.display = "none";
+    }else{
+        chat.style.display = "block";
+    }
+}
+
+
+/* AUDIO */
+
+function hablar(){
+
+    const texto =
+    "Bienvenido a nuestra página. " +
+    "Llevaremos a otro nivel tu negocio. " +
+    "Contáctate con nosotras. " +
+    "¿En qué podemos ayudarte?";
+
+    const voz = new SpeechSynthesisUtterance(texto);
+
+    voz.lang = "es-ES";
+    voz.rate = 0.9;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(voz);
+}
+
+
+/* WHATSAPP */
+
+function enviarWhatsApp(){
+
+    let mensaje =
+        document.getElementById("mensaje").value.trim();
+
+    if(mensaje === ""){
+        mensaje =
+        "Hola Kuña Guazú, visité su página web y quisiera recibir información.";
+    }
+
+    const telefono = "59167993188";
+
+    const url =
+        "https://wa.me/" +
+        telefono +
+        "?text=" +
+        encodeURIComponent(mensaje);
+
+    window.open(url,"_blank");
+}
+
+</script>
+
+</body>
+</html>
